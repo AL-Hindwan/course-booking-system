@@ -2,6 +2,9 @@
   "name": "course-booking-platform",
   "version": "0.1.0",
   "private": true,
+  "workspaces": [
+    "auth-backend"
+  ],
   "scripts": {
     "dev": "next dev",
     "prisma:generate": "cd auth-backend && npx prisma generate",
