@@ -1,6 +1,6 @@
-﻿"use client"
+"use client"
 
-import React, { useMemo, useState, useEffect, ReactNode } from "react"
+import React, { useMemo, useState, useEffect, ReactNode, Suspense } from "react"
 import { useSearchParams } from "next/navigation"
 import Image from "next/image"
 import Link from "next/link"
@@ -52,7 +52,7 @@ const featureMap: Record<string, { label: string; icon: ReactNode }> = {
 
 // Local HallImage component removed in favor of shared component
 
-export default function TrainerHallsPage({
+function TrainerHallsContent({
     hideTitle = false,
     basePath = "/trainer/halls",
     actionLabel = "عرض التفاصيل",
@@ -322,5 +322,17 @@ export default function TrainerHallsPage({
                 )}
             </div>
         </section>
+}
+
+export default function TrainerHallsPage(props: any) {
+    return (
+        <Suspense fallback={
+            <div className="flex h-[60vh] items-center justify-center">
+                <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+            </div>
+        }>
+            <TrainerHallsContent {...props} />
+        </Suspense>
     )
 }
+

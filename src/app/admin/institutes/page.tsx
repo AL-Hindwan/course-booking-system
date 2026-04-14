@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -22,7 +22,7 @@ import { adminService } from "@/lib/admin-service"
 
 import { useSearchParams } from "next/navigation"
 
-export default function AdminInstitutes() {
+function InstitutesContent() {
   const searchParams = useSearchParams()
   const viewId = searchParams.get('view')
 
@@ -534,5 +534,13 @@ export default function AdminInstitutes() {
         </DialogContent>
       </Dialog>
     </div>
+  )
+}
+
+export default function AdminInstitutes() {
+  return (
+    <Suspense fallback={<div className="p-8 text-center text-muted-foreground animate-pulse">جاري التحميل...</div>}>
+      <InstitutesContent />
+    </Suspense>
   )
 }
