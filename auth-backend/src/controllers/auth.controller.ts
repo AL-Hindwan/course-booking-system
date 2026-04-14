@@ -14,18 +14,16 @@ import {
 } from '../validators/auth.validator';
 
 export class AuthController {
-    async checkDb(req: Request, res: Response) {
+    async checkDb(_req: Request, res: Response, _next: NextFunction) {
         try {
             const result = await checkDatabaseConnection();
-            const userCount = await prisma.user.count();
-            
-            if (result.connected) {
-                return sendSuccess(res, `Connected! Users in DB: ${userCount}`, { ...result, userCount });
+            if (result.success) {
+                return sendSuccess(res, 'Database and Storage check successful', result);
             } else {
-                return sendError(res, `${result.message}: ${result.error}`, 500);
+                return sendError(res, `Diagnostic check failed: ${result.db.message} | ${result.storage.message}`, 500);
             }
         } catch (error: any) {
-            return sendError(res, `DB Error: ${error.message}`, 500);
+            return sendError(res, `Unexpected Error: ${error.message}`, 500);
         }
     }
 
