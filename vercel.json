@@ -3,35 +3,35 @@
   "rewrites": [
     {
       "source": "/api/auth/:match*",
-      "destination": "/auth-backend/src/server.ts"
+      "destination": "/api/index.ts"
     },
     {
       "source": "/api/admin/:match*",
-      "destination": "/auth-backend/src/server.ts"
+      "destination": "/api/index.ts"
     },
     {
       "source": "/api/institute/:match*",
-      "destination": "/auth-backend/src/server.ts"
+      "destination": "/api/index.ts"
     },
     {
       "source": "/api/trainer/:match*",
-      "destination": "/auth-backend/src/server.ts"
+      "destination": "/api/index.ts"
     },
     {
       "source": "/api/student/:match*",
-      "destination": "/auth-backend/src/server.ts"
+      "destination": "/api/index.ts"
     },
     {
       "source": "/api/notifications/:match*",
-      "destination": "/auth-backend/src/server.ts"
+      "destination": "/api/index.ts"
     },
     {
       "source": "/api/public/:match*",
-      "destination": "/auth-backend/src/server.ts"
+      "destination": "/api/index.ts"
     }
   ],
   "functions": {
-    "auth-backend/src/server.ts": {
+    "api/index.ts": {
       "includeFiles": "auth-backend/prisma/**"
     }
   }
