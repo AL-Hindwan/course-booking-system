@@ -6,12 +6,6 @@
       "excludeFiles": "node_modules/.prisma/client/libquery_engine-*"
     }
   },
-  "builds": [
-    {
-      "src": "src/server.ts",
-      "use": "@vercel/node"
-    }
-  ],
   "routes": [
     {
       "src": "/(.*)",
