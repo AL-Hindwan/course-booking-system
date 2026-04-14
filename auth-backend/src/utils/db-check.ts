@@ -8,7 +8,15 @@ import { config } from '../config';
  */
 export async function checkDatabaseConnection() {
     let storageStatus = { connected: false, message: 'Not checked' };
+    let jwtStatus = { configured: false, message: 'Checking...' };
 
+    // Check JWT Secrets
+    if (process.env.JWT_ACCESS_SECRET && process.env.JWT_REFRESH_SECRET) {
+        jwtStatus = { configured: true, message: 'JWT Secrets are configured' };
+    } else {
+        jwtStatus = { configured: false, message: 'JWT Secrets are MISSING' };
+    }
+    
     // Check Supabase Storage
     try {
         if (config.supabase.url && config.supabase.key) {
@@ -30,6 +38,7 @@ export async function checkDatabaseConnection() {
             connected: true,
             userCount,
             storage: storageStatus,
+            jwt: jwtStatus,
             message: 'Database connection successful'
         };
     } catch (error: any) {
@@ -38,6 +47,7 @@ export async function checkDatabaseConnection() {
             connected: false,
             error: error.message,
             storage: storageStatus,
+            jwt: jwtStatus,
             message: 'Failed to connect to the database'
         };
     }
