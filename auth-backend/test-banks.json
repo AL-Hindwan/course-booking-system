@@ -1,0 +1,327 @@
+[
+  {
+    "id": "416bab06-39ed-4cc5-baa3-a1bc305f22a7",
+    "name": "Main Training Hall A",
+    "capacity": 30,
+    "location": null,
+    "locationUrl": null,
+    "type": "قاعة محاضرات",
+    "description": null,
+    "pricePerHour": "50",
+    "facilities": [
+      "Projector",
+      "Whiteboard",
+      "AC",
+      "WiFi"
+    ],
+    "image": null,
+    "isActive": true,
+    "instituteId": "95b671d4-2743-4dbb-a5f8-991ee5c01ec8",
+    "availability": null,
+    "institute": {
+      "id": "95b671d4-2743-4dbb-a5f8-991ee5c01ec8",
+      "userId": "22d8f84e-1199-4bf4-bf71-74ce0655ea5b",
+      "name": "Tech Academy Yemen",
+      "description": "hello bro",
+      "email": "hmaamalhndwan@gmail.com",
+      "phone": "737654994",
+      "address": "Sana'a, Tech District, Building 42",
+      "logo": "/uploads/tank-1772475016254-457364032.png",
+      "website": "",
+      "licenseNumber": "",
+      "licenseDocumentUrl": "/uploads/4_5879850424822930429-1772369944769-817246654.pdf",
+      "verificationStatus": "APPROVED",
+      "rejectionReason": null,
+      "deletedAt": null,
+      "createdAt": "2026-02-22T13:40:47.555Z",
+      "updatedAt": "2026-03-02T18:10:16.325Z",
+      "bankAccounts": [
+        {
+          "id": "458c2843-ba30-4c8f-ad5e-2da3ba0fb572",
+          "bankName": "العمقي",
+          "accountName": "همام",
+          "accountNumber": "74370329473075234057230485",
+          "iban": "ry",
+          "isActive": true,
+          "instituteId": "95b671d4-2743-4dbb-a5f8-991ee5c01ec8",
+          "trainerId": null,
+          "createdAt": "2026-03-06T08:07:49.201Z",
+          "updatedAt": "2026-03-06T08:08:03.174Z"
+        }
+      ]
+    }
+  },
+  {
+    "id": "b4782216-d1d9-454f-a24a-6fd625f8719a",
+    "name": "Seminar Room B",
+    "capacity": 15,
+    "location": null,
+    "locationUrl": null,
+    "type": "قاعة محاضرات",
+    "description": null,
+    "pricePerHour": "40",
+    "facilities": [
+      "Projector",
+      "Whiteboard",
+      "AC"
+    ],
+    "image": null,
+    "isActive": true,
+    "instituteId": "95b671d4-2743-4dbb-a5f8-991ee5c01ec8",
+    "availability": null,
+    "institute": {
+      "id": "95b671d4-2743-4dbb-a5f8-991ee5c01ec8",
+      "userId": "22d8f84e-1199-4bf4-bf71-74ce0655ea5b",
+      "name": "Tech Academy Yemen",
+      "description": "hello bro",
+      "email": "hmaamalhndwan@gmail.com",
+      "phone": "737654994",
+      "address": "Sana'a, Tech District, Building 42",
+      "logo": "/uploads/tank-1772475016254-457364032.png",
+      "website": "",
+      "licenseNumber": "",
+      "licenseDocumentUrl": "/uploads/4_5879850424822930429-1772369944769-817246654.pdf",
+      "verificationStatus": "APPROVED",
+      "rejectionReason": null,
+      "deletedAt": null,
+      "createdAt": "2026-02-22T13:40:47.555Z",
+      "updatedAt": "2026-03-02T18:10:16.325Z",
+      "bankAccounts": [
+        {
+          "id": "458c2843-ba30-4c8f-ad5e-2da3ba0fb572",
+          "bankName": "العمقي",
+          "accountName": "همام",
+          "accountNumber": "74370329473075234057230485",
+          "iban": "ry",
+          "isActive": true,
+          "instituteId": "95b671d4-2743-4dbb-a5f8-991ee5c01ec8",
+          "trainerId": null,
+          "createdAt": "2026-03-06T08:07:49.201Z",
+          "updatedAt": "2026-03-06T08:08:03.174Z"
+        }
+      ]
+    }
+  },
+  {
+    "id": "1086e1d5-4bfe-468d-bb81-4db718de5101",
+    "name": "Conference Hall",
+    "capacity": 50,
+    "location": null,
+    "locationUrl": null,
+    "type": "قاعة محاضرات",
+    "description": null,
+    "pricePerHour": "100",
+    "facilities": [
+      "Projector",
+      "Sound System",
+      "AC",
+      "WiFi",
+      "Video Conferencing"
+    ],
+    "image": null,
+    "isActive": true,
+    "instituteId": "4f72a2c3-eeb1-45c3-91a3-626f60a80d70",
+    "availability": null,
+    "institute": {
+      "id": "4f72a2c3-eeb1-45c3-91a3-626f60a80d70",
+      "userId": "258a9843-1f26-4af4-b6a3-7c6516ac170a",
+      "name": "Business Skills Institute",
+      "description": "Professional development and business training center",
+      "email": "contact@businessskills.ye",
+      "phone": "+967777111002",
+      "address": "Aden, Commercial Hub, Floor 3",
+      "logo": null,
+      "website": null,
+      "licenseNumber": "LIC-2024-002",
+      "licenseDocumentUrl": null,
+      "verificationStatus": "APPROVED",
+      "rejectionReason": null,
+      "deletedAt": null,
+      "createdAt": "2026-02-22T13:40:47.558Z",
+      "updatedAt": "2026-03-02T18:55:27.072Z",
+      "bankAccounts": []
+    }
+  },
+  {
+    "id": "18d51960-26a9-470a-ba13-ba7a2703a397",
+    "name": "Workshop Space",
+    "capacity": 25,
+    "location": null,
+    "locationUrl": null,
+    "type": "قاعة محاضرات",
+    "description": null,
+    "pricePerHour": "60",
+    "facilities": [
+      "Tables",
+      "Chairs",
+      "Whiteboard",
+      "AC"
+    ],
+    "image": null,
+    "isActive": false,
+    "instituteId": "4f72a2c3-eeb1-45c3-91a3-626f60a80d70",
+    "availability": null,
+    "institute": {
+      "id": "4f72a2c3-eeb1-45c3-91a3-626f60a80d70",
+      "userId": "258a9843-1f26-4af4-b6a3-7c6516ac170a",
+      "name": "Business Skills Institute",
+      "description": "Professional development and business training center",
+      "email": "contact@businessskills.ye",
+      "phone": "+967777111002",
+      "address": "Aden, Commercial Hub, Floor 3",
+      "logo": null,
+      "website": null,
+      "licenseNumber": "LIC-2024-002",
+      "licenseDocumentUrl": null,
+      "verificationStatus": "APPROVED",
+      "rejectionReason": null,
+      "deletedAt": null,
+      "createdAt": "2026-02-22T13:40:47.558Z",
+      "updatedAt": "2026-03-02T18:55:27.072Z",
+      "bankAccounts": []
+    }
+  },
+  {
+    "id": "70d1a3e4-0432-4d93-9ec9-5cd11c53440a",
+    "name": "Computer Lab 1",
+    "capacity": 20,
+    "location": "lefljlgjrg",
+    "locationUrl": null,
+    "type": "قاعة اجتماعات",
+    "description": null,
+    "pricePerHour": "75",
+    "facilities": [
+      "20 Computers",
+      "Projector",
+      "AC",
+      "WiFi",
+      "Software Licenses",
+      "computers",
+      "wifi",
+      "projector"
+    ],
+    "image": "/uploads/tank-1772105206463-243888397.png",
+    "isActive": true,
+    "instituteId": "95b671d4-2743-4dbb-a5f8-991ee5c01ec8",
+    "availability": [
+      {
+        "day": "SUNDAY",
+        "endTime": "16:00",
+        "startTime": "08:00"
+      },
+      {
+        "day": "MONDAY",
+        "endTime": "16:00",
+        "startTime": "08:00"
+      }
+    ],
+    "institute": {
+      "id": "95b671d4-2743-4dbb-a5f8-991ee5c01ec8",
+      "userId": "22d8f84e-1199-4bf4-bf71-74ce0655ea5b",
+      "name": "Tech Academy Yemen",
+      "description": "hello bro",
+      "email": "hmaamalhndwan@gmail.com",
+      "phone": "737654994",
+      "address": "Sana'a, Tech District, Building 42",
+      "logo": "/uploads/tank-1772475016254-457364032.png",
+      "website": "",
+      "licenseNumber": "",
+      "licenseDocumentUrl": "/uploads/4_5879850424822930429-1772369944769-817246654.pdf",
+      "verificationStatus": "APPROVED",
+      "rejectionReason": null,
+      "deletedAt": null,
+      "createdAt": "2026-02-22T13:40:47.555Z",
+      "updatedAt": "2026-03-02T18:10:16.325Z",
+      "bankAccounts": [
+        {
+          "id": "458c2843-ba30-4c8f-ad5e-2da3ba0fb572",
+          "bankName": "العمقي",
+          "accountName": "همام",
+          "accountNumber": "74370329473075234057230485",
+          "iban": "ry",
+          "isActive": true,
+          "instituteId": "95b671d4-2743-4dbb-a5f8-991ee5c01ec8",
+          "trainerId": null,
+          "createdAt": "2026-03-06T08:07:49.201Z",
+          "updatedAt": "2026-03-06T08:08:03.174Z"
+        }
+      ]
+    }
+  },
+  {
+    "id": "cf153a7f-81cc-4cd7-8fbb-80e42ffdf69b",
+    "name": "hammam",
+    "capacity": 50,
+    "location": "jgugug",
+    "locationUrl": null,
+    "type": "قاعة محاضرات",
+    "description": "klhii",
+    "pricePerHour": "600",
+    "facilities": [
+      "wifi",
+      "projector"
+    ],
+    "image": "/uploads/sky-1772204625076-478061467.png",
+    "isActive": true,
+    "instituteId": "95b671d4-2743-4dbb-a5f8-991ee5c01ec8",
+    "availability": [
+      {
+        "day": "SUNDAY",
+        "endTime": "16:00",
+        "startTime": "08:00"
+      },
+      {
+        "day": "MONDAY",
+        "endTime": "16:00",
+        "startTime": "08:00"
+      },
+      {
+        "day": "TUESDAY",
+        "endTime": "13:00",
+        "startTime": "08:00"
+      },
+      {
+        "day": "WEDNESDAY",
+        "endTime": "20:00",
+        "startTime": "10:00"
+      },
+      {
+        "day": "SATURDAY",
+        "endTime": "13:00",
+        "startTime": "08:00"
+      }
+    ],
+    "institute": {
+      "id": "95b671d4-2743-4dbb-a5f8-991ee5c01ec8",
+      "userId": "22d8f84e-1199-4bf4-bf71-74ce0655ea5b",
+      "name": "Tech Academy Yemen",
+      "description": "hello bro",
+      "email": "hmaamalhndwan@gmail.com",
+      "phone": "737654994",
+      "address": "Sana'a, Tech District, Building 42",
+      "logo": "/uploads/tank-1772475016254-457364032.png",
+      "website": "",
+      "licenseNumber": "",
+      "licenseDocumentUrl": "/uploads/4_5879850424822930429-1772369944769-817246654.pdf",
+      "verificationStatus": "APPROVED",
+      "rejectionReason": null,
+      "deletedAt": null,
+      "createdAt": "2026-02-22T13:40:47.555Z",
+      "updatedAt": "2026-03-02T18:10:16.325Z",
+      "bankAccounts": [
+        {
+          "id": "458c2843-ba30-4c8f-ad5e-2da3ba0fb572",
+          "bankName": "العمقي",
+          "accountName": "همام",
+          "accountNumber": "74370329473075234057230485",
+          "iban": "ry",
+          "isActive": true,
+          "instituteId": "95b671d4-2743-4dbb-a5f8-991ee5c01ec8",
+          "trainerId": null,
+          "createdAt": "2026-03-06T08:07:49.201Z",
+          "updatedAt": "2026-03-06T08:08:03.174Z"
+        }
+      ]
+    }
+  }
+]

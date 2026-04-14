@@ -1,0 +1,53 @@
+# Dependencies
+node_modules
+/.pnp
+.pnp.js
+
+# Testing
+/coverage
+
+# Next.js
+/.next/
+/out/
+
+# Production
+/build
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+*.log
+tsc_output.txt
+tsc_halls_error.txt
+build_log.txt
+build_output.txt
+next-error.log
+
+# Local env files
+.env*.local
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Misc
+.DS_Store
+*.pem
+temp_result.json
+bfg-1.15.0.jar
+
+# Auth-Backend specific
+auth-backend/node_modules
+auth-backend/debug_*.json
+auth-backend/test*.js
+auth-backend/ts_errors*.txt
+auth-backend/temp.ts
+auth-backend/check*.js
+auth-backend/dump.js
+auth-backend/reproduce_issue.js
+auth-backend/scratch/

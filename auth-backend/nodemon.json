@@ -1,0 +1,9 @@
+{
+    "ts-node": {
+        "require": [
+            "tsconfig-paths/register"
+        ],
+        "transpileOnly": true,
+        "files": true
+    }
+}
