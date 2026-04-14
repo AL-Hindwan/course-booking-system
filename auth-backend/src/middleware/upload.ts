@@ -28,7 +28,7 @@ export const upload = multer({
     storage,
     fileFilter,
     limits: {
-        fileSize: 5 * 1024 * 1024, // 5MB limit per file
+        fileSize: 4 * 1024 * 1024, // 4MB limit per file (Vercel payload limit is 4.5MB)
     },
 });
 

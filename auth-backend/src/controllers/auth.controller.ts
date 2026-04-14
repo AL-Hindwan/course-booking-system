@@ -31,22 +31,35 @@ export class AuthController {
 
     async register(req: Request, res: Response, _next: NextFunction) {
         try {
-            console.log('Register controller called');
-            const data: RegisterInput = req.body;
-
+            console.log('--- REGISTRATION ATTEMPT ---');
+            console.log('Time:', new Date().toISOString());
+            console.log('Body Fields:', Object.keys(req.body));
+            console.log('Role:', req.body.role);
+            
             // Extract uploaded files from multer
             const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+            if (files) {
+                console.log('Files received:', Object.keys(files));
+                Object.keys(files).forEach(key => {
+                    console.log(`- ${key}: ${files[key]?.length} files`);
+                });
+            } else {
+                console.log('No files received in request');
+            }
 
-            const result = await authService.register(data, files);
+            console.log('Calling authService.register...');
+            const result = await authService.register(req.body, files);
+            console.log('authService.register SUCCESS');
 
-            // Inline response to debug sendSuccess issue
             return res.status(201).json({
                 success: true,
                 message: result.message,
                 data: { userId: result.userId }
             });
         } catch (error: any) {
-            console.error('ERROR:', error.message);
+            console.error('--- REGISTRATION FAILED ---');
+            console.error('Error Message:', error.message);
+            console.error('Error Stack:', error.stack);
             return res.status(400).json({
                 success: false,
                 message: error.message
