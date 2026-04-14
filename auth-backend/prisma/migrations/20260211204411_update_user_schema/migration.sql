@@ -1,8 +1,0 @@
--- AlterEnum
-ALTER TYPE "UserStatus" ADD VALUE 'PENDING_VERIFICATION';
-
--- AlterTable
-ALTER TABLE "users" ADD COLUMN     "email_verified" BOOLEAN NOT NULL DEFAULT false,
-ADD COLUMN     "failed_login_attempts" INTEGER NOT NULL DEFAULT 0,
-ADD COLUMN     "lock_until" TIMESTAMP(3),
-ALTER COLUMN "status" SET DEFAULT 'PENDING_VERIFICATION';
