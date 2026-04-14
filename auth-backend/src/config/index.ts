@@ -39,7 +39,7 @@ export const config: Config = {
     nodeEnv: process.env.NODE_ENV || 'development',
 
     database: {
-        url: process.env.DATABASE_URL!,
+        url: process.env.DATABASE_URL || '',
     },
 
     jwt: {
