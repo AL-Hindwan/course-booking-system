@@ -1,4 +1,5 @@
 import prisma from '../config/database';
+import { UserRole } from '@prisma/client';
 import { hashPassword, comparePassword } from '../utils/password';
 import {
     generateAccessToken,
@@ -24,7 +25,7 @@ export class AuthService {
     // Register new user
     async register(data: RegisterInput, files?: { cv?: Express.Multer.File[]; certificates?: Express.Multer.File[]; licenseDocument?: Express.Multer.File[] }) {
         const { name, email, password, phone } = data;
-        const role = (data.role as string)?.toUpperCase() || 'STUDENT';
+        const role = ((data.role as string)?.toUpperCase() || 'STUDENT') as UserRole;
 
         // Check if user exists
         const existingUser = await prisma.user.findUnique({
