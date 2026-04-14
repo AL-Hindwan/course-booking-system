@@ -33,6 +33,7 @@ export class AuthController {
         try {
             console.log('--- REGISTRATION ATTEMPT ---');
             console.log('Time:', new Date().toISOString());
+            console.log('Host:', req.headers.host);
             console.log('Body Fields:', Object.keys(req.body));
             console.log('Role:', req.body.role);
             

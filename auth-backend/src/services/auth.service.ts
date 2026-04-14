@@ -23,7 +23,8 @@ import {
 export class AuthService {
     // Register new user
     async register(data: RegisterInput, files?: { cv?: Express.Multer.File[]; certificates?: Express.Multer.File[]; licenseDocument?: Express.Multer.File[] }) {
-        const { name, email, password, role, phone } = data;
+        const { name, email, password, phone } = data;
+        const role = (data.role as string)?.toUpperCase() || 'STUDENT';
 
         // Check if user exists
         const existingUser = await prisma.user.findUnique({
