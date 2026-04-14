@@ -4,3 +4,10 @@ node_modules/
 out/
 build/
 *.sql
+auth-backend/node_modules/
+auth-backend/dist/
+auth-backend/uploads/
+auth-backend/prisma/migrations/
+auth-backend/src/**/*.test.ts
+auth-backend/src/**/*.spec.ts
+**/cannon-*.png
