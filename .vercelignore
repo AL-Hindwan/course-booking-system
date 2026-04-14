@@ -1,4 +1,4 @@
-auth-backend/
+# auth-backend/ (removed to allow Vercel build)
 .git/
 node_modules/
 .next/

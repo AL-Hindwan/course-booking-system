@@ -32,7 +32,6 @@
   ],
   "functions": {
     "auth-backend/src/server.ts": {
-      "runtime": "@vercel/node",
       "includeFiles": "auth-backend/prisma/**"
     }
   }
