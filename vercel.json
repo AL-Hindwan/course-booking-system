@@ -1,0 +1,39 @@
+{
+  "version": 2,
+  "rewrites": [
+    {
+      "source": "/api/auth/:match*",
+      "destination": "/auth-backend/src/server.ts"
+    },
+    {
+      "source": "/api/admin/:match*",
+      "destination": "/auth-backend/src/server.ts"
+    },
+    {
+      "source": "/api/institute/:match*",
+      "destination": "/auth-backend/src/server.ts"
+    },
+    {
+      "source": "/api/trainer/:match*",
+      "destination": "/auth-backend/src/server.ts"
+    },
+    {
+      "source": "/api/student/:match*",
+      "destination": "/auth-backend/src/server.ts"
+    },
+    {
+      "source": "/api/notifications/:match*",
+      "destination": "/auth-backend/src/server.ts"
+    },
+    {
+      "source": "/api/public/:match*",
+      "destination": "/auth-backend/src/server.ts"
+    }
+  ],
+  "functions": {
+    "auth-backend/src/server.ts": {
+      "runtime": "vercel-node@latest",
+      "includeFiles": "auth-backend/prisma/**"
+    }
+  }
+}
