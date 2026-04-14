@@ -12,3 +12,4 @@ export const getUserIdFromCookies = async () => {
     return null
   }
 }
+
