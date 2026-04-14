@@ -2,8 +2,7 @@
   "version": 2,
   "functions": {
     "src/server.ts": {
-      "includeFiles": "prisma/**",
-      "excludeFiles": "node_modules/.prisma/client/libquery_engine-*"
+      "includeFiles": "prisma/**"
     }
   },
   "routes": [

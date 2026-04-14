@@ -20,7 +20,7 @@ import {
 const router = Router();
 
 // Connection check route
-router.get('/test-db', authController.checkDb);
+router.get('/db-check', authController.checkDb);
 
 // Public routes
 router.post(
