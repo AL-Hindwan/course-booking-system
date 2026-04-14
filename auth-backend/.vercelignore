@@ -1,0 +1,24 @@
+# Ignore local uploads
+uploads/
+node_modules/
+
+# Ignore development files
+src/**/*.test.ts
+src/**/*.spec.ts
+prisma/migrations/
+schema.sql
+schema_utf8.sql
+
+# Ignore documentation
+*.md
+docs/
+
+# Ignore configuration
+.env
+.env.local
+.env.development
+.env.production
+.gitignore
+.prettierrc
+.eslintrc.json
+tsconfig.json
