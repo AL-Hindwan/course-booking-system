@@ -26,12 +26,13 @@ class UploadService {
             
             const { data, error } = await this.supabase.storage
                 .from(config.supabase.bucket)
-                .upload(fileName, file.buffer || require('fs').readFileSync(file.path), {
+                .upload(fileName, file.buffer, {
                     contentType: file.mimetype,
                     upsert: false
                 });
 
             if (error) {
+                console.error('❌ Supabase Storage Error Object:', JSON.stringify(error, null, 2));
                 throw error;
             }
 
@@ -40,10 +41,14 @@ class UploadService {
                 .from(config.supabase.bucket)
                 .getPublicUrl(fileName);
 
+            if (!publicUrlData?.publicUrl) {
+                throw new Error('Could not generate public URL for uploaded file');
+            }
+
             return publicUrlData.publicUrl;
-        } catch (error) {
-            console.error('❌ Supabase Upload Error:', error);
-            throw new Error('Failed to upload file to storage');
+        } catch (error: any) {
+            console.error('❌ Upload Service Exception:', error.message || error);
+            throw new Error(`Failed to upload file: ${error.message || 'Unknown error'}`);
         }
     }
 
