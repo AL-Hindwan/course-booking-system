@@ -322,6 +322,7 @@ function TrainerHallsContent({
                 )}
             </div>
         </section>
+    )
 }
 
 export default function TrainerHallsPage(props: any) {
