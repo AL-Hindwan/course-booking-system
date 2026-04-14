@@ -1,7 +1,8 @@
 import { cookies } from "next/headers"
 
-export const getUserIdFromCookies = () => {
-  const cookieValue = cookies().get("course_platform_user")?.value
+export const getUserIdFromCookies = async () => {
+  const cookieStore = await cookies()
+  const cookieValue = cookieStore.get("course_platform_user")?.value
   if (!cookieValue) return null
 
   try {
