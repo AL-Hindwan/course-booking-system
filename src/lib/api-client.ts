@@ -45,15 +45,7 @@ const onTokenRefreshed = (token: string): void => {
  * Create Axios instance with base configuration
  */
 const getBaseURL = () => {
-    // Priority 1: If we are on Vercel/Production browser, always use the current origin for the API
-    if (typeof window !== 'undefined' && (window.location.hostname.endsWith('.vercel.app') || !window.location.hostname.includes('localhost'))) {
-        return window.location.origin;
-    }
-
-    // Priority 2: Use explicitly provided API URL if available (usually for mobile or cross-domain staging)
     if (process.env.NEXT_PUBLIC_API_URL) return process.env.NEXT_PUBLIC_API_URL;
-    
-    // Priority 3: Fallback for local development
     if (typeof window !== 'undefined') return window.location.origin;
     return 'http://localhost:5000';
 };

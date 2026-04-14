@@ -2,9 +2,12 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-// Log warning if required environment variables are missing (instead of crashing)
-if (!process.env.JWT_ACCESS_SECRET || !process.env.JWT_REFRESH_SECRET) {
-    console.warn('⚠️ WARNING: JWT secrets are missing! Authentication will fail.');
+// Validate required environment variables
+if (!process.env.JWT_ACCESS_SECRET) {
+    throw new Error('JWT_ACCESS_SECRET is required');
+}
+if (!process.env.JWT_REFRESH_SECRET) {
+    throw new Error('JWT_REFRESH_SECRET is required');
 }
 
 interface Config {
@@ -39,7 +42,7 @@ export const config: Config = {
     nodeEnv: process.env.NODE_ENV || 'development',
 
     database: {
-        url: process.env.DATABASE_URL || '',
+        url: process.env.DATABASE_URL!,
     },
 
     jwt: {
