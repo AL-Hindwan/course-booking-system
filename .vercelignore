@@ -1,8 +1,6 @@
-auth-backend/ 
 .git/
 node_modules/
 .next/
 out/
 build/
 *.sql
-prisma/
