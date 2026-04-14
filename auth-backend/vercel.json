@@ -15,11 +15,11 @@
   "crons": [
     {
       "path": "/api/public/cron/sessions",
-      "schedule": "0 * * * *"
+      "schedule": "0 0 * * *"
     },
     {
       "path": "/api/public/cron/announcements",
-      "schedule": "*/5 * * * *"
+      "schedule": "0 1 * * *"
     }
   ]
 }
