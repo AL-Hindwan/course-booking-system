@@ -3,6 +3,7 @@ import authService from '../services/auth.service';
 import { sendSuccess, sendError } from '../utils/response';
 import { AuthRequest } from '../middleware/authenticate';
 import { uploadService } from '../services/upload.service';
+import { checkDatabaseConnection } from '../utils/db-check';
 import {
     RegisterInput,
     LoginInput,
@@ -12,6 +13,15 @@ import {
 } from '../validators/auth.validator';
 
 export class AuthController {
+    async checkDb(req: Request, res: Response) {
+        const result = await checkDatabaseConnection();
+        if (result.connected) {
+            return sendSuccess(res, result.message, result);
+        } else {
+            return sendError(res, result.message, 500, result);
+        }
+    }
+
     async register(req: Request, res: Response, _next: NextFunction) {
         try {
             console.log('Register controller called');

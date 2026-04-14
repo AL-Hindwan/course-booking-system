@@ -19,6 +19,9 @@ import {
 
 const router = Router();
 
+// Connection check route
+router.get('/test-db', authController.checkDb);
+
 // Public routes
 router.post(
     '/register',
