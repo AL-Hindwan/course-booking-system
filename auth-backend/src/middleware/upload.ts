@@ -2,19 +2,8 @@ import multer from 'multer';
 import path from 'path';
 import { Request } from 'express';
 
-// Configure storage
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads/');
-    },
-    filename: (req, file, cb) => {
-        // Generate unique filename: timestamp-randomstring-originalname
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        const ext = path.extname(file.originalname);
-        const nameWithoutExt = path.basename(file.originalname, ext);
-        cb(null, `${nameWithoutExt}-${uniqueSuffix}${ext}`);
-    },
-});
+// Configure storage to use memory instead of disk for Vercel/Serverless compatibility
+const storage = multer.memoryStorage();
 
 // File filter for allowed file types
 const fileFilter = (req: Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
