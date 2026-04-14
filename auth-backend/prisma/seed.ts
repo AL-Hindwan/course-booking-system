@@ -1,13 +1,12 @@
 import { PrismaClient } from '@prisma/client';
 import 'dotenv/config';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
 // Helper function to hash passwords
 async function hashPassword(password: string): Promise<string> {
-    const salt = await bcrypt.genSalt(10);
-    return bcrypt.hash(password, salt);
+    return bcrypt.hash(password, 12);
 }
 
 // Helper function to create future date
