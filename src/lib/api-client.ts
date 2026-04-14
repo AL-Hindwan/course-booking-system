@@ -44,8 +44,14 @@ const onTokenRefreshed = (token: string): void => {
 /**
  * Create Axios instance with base configuration
  */
+const getBaseURL = () => {
+    if (process.env.NEXT_PUBLIC_API_URL) return process.env.NEXT_PUBLIC_API_URL;
+    if (typeof window !== 'undefined') return window.location.origin;
+    return 'http://localhost:5000';
+};
+
 const apiClient: AxiosInstance = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000',
+    baseURL: getBaseURL(),
     timeout: 30000,
     withCredentials: true, // Critical: Send HTTP-only cookies
     headers: {
@@ -124,7 +130,7 @@ apiClient.interceptors.response.use(
         try {
             // Call refresh token endpoint
             const response = await axios.post(
-                `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/auth/refresh`,
+                `${getBaseURL()}/api/auth/refresh`,
                 {},
                 {
                     withCredentials: true, // Send HTTP-only cookie

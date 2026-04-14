@@ -28,7 +28,12 @@ export function getFileUrl(path: string | null | undefined): string | undefined 
   const trimmedPath = path.trim()
   if (trimmedPath.startsWith("http") || trimmedPath.startsWith("blob:")) return trimmedPath
 
-  const apiBase = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000").replace(/\/$/, "")
+  const getBase = () => {
+    if (process.env.NEXT_PUBLIC_API_URL) return process.env.NEXT_PUBLIC_API_URL;
+    if (typeof window !== 'undefined') return window.location.origin;
+    return 'http://localhost:5000';
+  };
+  const apiBase = getBase().replace(/\/$/, "")
   const cleanPath = trimmedPath.startsWith("/") ? trimmedPath : `/${trimmedPath}`
 
   return `${apiBase}${cleanPath}`

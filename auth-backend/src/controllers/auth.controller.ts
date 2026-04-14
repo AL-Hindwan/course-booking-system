@@ -14,11 +14,17 @@ import {
 
 export class AuthController {
     async checkDb(req: Request, res: Response) {
-        const result = await checkDatabaseConnection();
-        if (result.connected) {
-            return sendSuccess(res, result.message, result);
-        } else {
-            return sendError(res, `${result.message}: ${result.error}`, 500);
+        try {
+            const result = await checkDatabaseConnection();
+            const userCount = await prisma.user.count();
+            
+            if (result.connected) {
+                return sendSuccess(res, `Connected! Users in DB: ${userCount}`, { ...result, userCount });
+            } else {
+                return sendError(res, `${result.message}: ${result.error}`, 500);
+            }
+        } catch (error: any) {
+            return sendError(res, `DB Error: ${error.message}`, 500);
         }
     }
 
