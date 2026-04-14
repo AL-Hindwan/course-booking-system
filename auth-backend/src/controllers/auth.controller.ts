@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import authService from '../services/auth.service';
 import { sendSuccess, sendError } from '../utils/response';
 import { AuthRequest } from '../middleware/authenticate';
+import { uploadService } from '../services/upload.service';
 import {
     RegisterInput,
     LoginInput,
@@ -150,7 +151,7 @@ export class AuthController {
 
             let avatar = undefined;
             if (req.file) {
-                avatar = `/uploads/${req.file.filename}`;
+                avatar = await uploadService.uploadFile(req.file, 'avatars');
             }
 
             const user = await authService.updateProfile(userId, { name, phone, avatar, email });

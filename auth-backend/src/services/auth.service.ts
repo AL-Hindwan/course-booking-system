@@ -1,5 +1,4 @@
 import prisma from '../config/database';
-import redis from '../config/redis';
 import { hashPassword, comparePassword } from '../utils/password';
 import {
     generateAccessToken,
@@ -11,6 +10,7 @@ import {
 } from '../utils/jwt';
 import { config } from '../config';
 import { mailerService } from './mailer.service';
+import { uploadService } from './upload.service';
 import {
     RegisterInput,
     LoginInput,
@@ -58,8 +58,10 @@ export class AuthService {
 
         // Create role-specific profiles with uploaded files
         if (role === 'TRAINER' && files) {
-            const cvUrl = files.cv?.[0] ? `/uploads/${files.cv[0].filename}` : undefined;
-            const certificatesUrls = files.certificates?.map(file => `/uploads/${file.filename}`) || [];
+            const cvUrl = files.cv?.[0] ? await uploadService.uploadFile(files.cv[0], 'trainers/cvs') : undefined;
+            const certificatesUrls = files.certificates 
+                ? await Promise.all(files.certificates.map(file => uploadService.uploadFile(file, 'trainers/certificates'))) 
+                : [];
 
             await prisma.trainerProfile.create({
                 data: {
@@ -71,7 +73,7 @@ export class AuthService {
                 },
             });
         } else if (role === 'INSTITUTE_ADMIN' && files) {
-            const licenseDocumentUrl = files.licenseDocument?.[0] ? `/uploads/${files.licenseDocument[0].filename}` : undefined;
+            const licenseDocumentUrl = files.licenseDocument?.[0] ? await uploadService.uploadFile(files.licenseDocument[0], 'institutes/licenses') : undefined;
 
             await prisma.institute.create({
                 data: {
@@ -281,17 +283,6 @@ export class AuthService {
             },
         });
 
-        // Store in Redis for quick invalidation (optional)
-        try {
-            await redis.setex(
-                `refresh:${user.id}:${refreshTokenHash}`,
-                7 * 24 * 60 * 60, // 7 days
-                'valid'
-            );
-        } catch (error) {
-            console.warn('Redis error during login (non-fatal):', error);
-        }
-
         return {
             accessToken,
             refreshToken,
@@ -336,31 +327,10 @@ export class AuthService {
             throw new Error('Invalid or expired refresh token');
         }
 
-        // Check Redis (optional)
-        try {
-            const redisKey = `refresh:${decoded.userId}:${tokenHash}`;
-            const isValid = await redis.get(redisKey);
-
-            // Only check if key exists (if Redis is working)
-            if (isValid === null && await redis.ping().then(() => true).catch(() => false)) {
-                // If Redis is up but key is missing, it might be revoked
-                // But for now, let's rely on DB primarily if Redis is optional
-            }
-        } catch (error) {
-            console.warn('Redis error during refresh check (non-fatal):', error);
-        }
-
         // Delete old refresh token
         await prisma.token.delete({
             where: { id: tokenRecord.id },
         });
-
-        try {
-            const redisKey = `refresh:${decoded.userId}:${tokenHash}`;
-            await redis.del(redisKey);
-        } catch (error) {
-            console.warn('Redis error during refresh cleanup (non-fatal):', error);
-        }
 
         // Generate new tokens
         const tokenPayload = {
@@ -383,16 +353,6 @@ export class AuthService {
             },
         });
 
-        try {
-            await redis.setex(
-                `refresh:${decoded.userId}:${newTokenHash}`,
-                7 * 24 * 60 * 60,
-                'valid'
-            );
-        } catch (error) {
-            console.warn('Redis error during refresh storage (non-fatal):', error);
-        }
-
         return {
             accessToken: newAccessToken,
             refreshToken: newRefreshToken,
@@ -411,14 +371,6 @@ export class AuthService {
                 type: 'REFRESH',
             },
         });
-
-        // Delete from Redis
-        try {
-            const redisKey = `refresh:${userId}:${tokenHash}`;
-            await redis.del(redisKey);
-        } catch (error) {
-            console.warn('Redis error during logout (non-fatal):', error);
-        }
 
         return { message: 'Logged out successfully' };
     }
@@ -510,16 +462,6 @@ export class AuthService {
                 type: 'REFRESH',
             },
         });
-
-        // Clear Redis
-        try {
-            const keys = await redis.keys(`refresh:${tokenRecord.userId}:*`);
-            if (keys.length > 0) {
-                await redis.del(...keys);
-            }
-        } catch (error) {
-            console.warn('Redis error during password reset (non-fatal):', error);
-        }
 
         return { message: 'Password reset successfully' };
     }
@@ -637,16 +579,6 @@ export class AuthService {
                 type: 'REFRESH',
             },
         });
-
-        // Clear Redis
-        try {
-            const keys = await redis.keys(`refresh:${userId}:*`);
-            if (keys.length > 0) {
-                await redis.del(...keys);
-            }
-        } catch (error) {
-            console.warn('Redis error during password change (non-fatal):', error);
-        }
 
         return { message: 'تم تغيير كلمة المرور بنجاح' };
     }

@@ -2,6 +2,7 @@ import { Response, NextFunction } from 'express';
 import { AuthRequest } from '../middleware/authenticate';
 import studentService from '../services/student.service';
 import { sendError, sendSuccess } from '../utils/response';
+import { uploadService } from '../services/upload.service';
 
 class StudentController {
     /**
@@ -102,8 +103,8 @@ class StudentController {
                 return sendError(res, 'يرجى إرفاق صورة السند', 400);
             }
 
-            // Convert local file path to URL accessible path
-            const imagePath = `/uploads/${file.filename}`;
+            // Upload to Supabase
+            const imagePath = await uploadService.uploadFile(file, 'payments/receipts');
 
             const data = await studentService.submitPaymentProof(req.user.userId, courseId, imagePath);
             return sendSuccess(res, 'تم رفع سند الدفع بنجاح', data);

@@ -22,11 +22,6 @@ interface Config {
         accessExpiresIn: string;
         refreshExpiresIn: string;
     };
-    redis: {
-        host: string;
-        port: number;
-        password: string | undefined;
-    };
     security: {
         bcryptRounds: number;
         maxLoginAttempts: number;
@@ -34,6 +29,11 @@ interface Config {
     };
     cors: {
         origin: string;
+    };
+    supabase: {
+        url: string;
+        key: string;
+        bucket: string;
     };
 }
 
@@ -52,12 +52,6 @@ export const config: Config = {
         refreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d',
     },
 
-    redis: {
-        host: process.env.REDIS_HOST || 'localhost',
-        port: parseInt(process.env.REDIS_PORT || '6379'),
-        password: process.env.REDIS_PASSWORD || undefined,
-    },
-
     security: {
         bcryptRounds: parseInt(process.env.BCRYPT_ROUNDS || '12'),
         maxLoginAttempts: parseInt(process.env.MAX_LOGIN_ATTEMPTS || '5'),
@@ -66,5 +60,11 @@ export const config: Config = {
 
     cors: {
         origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+    },
+
+    supabase: {
+        url: process.env.SUPABASE_URL || '',
+        key: process.env.SUPABASE_KEY || '',
+        bucket: process.env.SUPABASE_BUCKET || 'course-platform',
     },
 };

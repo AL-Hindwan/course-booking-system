@@ -2,6 +2,7 @@ import { Response, NextFunction } from 'express';
 import { AuthRequest } from '../middleware/authenticate';
 import { sendSuccess, sendError } from '../utils/response';
 import instituteService from '../services/institute.service';
+import { uploadService } from '../services/upload.service';
 
 class InstituteController {
     async getDashboard(req: AuthRequest, res: Response, _next: NextFunction) {
@@ -42,13 +43,13 @@ class InstituteController {
             if (req.files) {
                 const files = req.files as { [fieldname: string]: Express.Multer.File[] };
                 if (files['avatar'] && files['avatar'][0]) {
-                    payload.avatar = `/uploads/${files['avatar'][0].filename}`;
+                    payload.avatar = await uploadService.uploadFile(files['avatar'][0], 'avatars');
                 }
                 if (files['logo'] && files['logo'][0]) {
-                    payload.logo = `/uploads/${files['logo'][0].filename}`;
+                    payload.logo = await uploadService.uploadFile(files['logo'][0], 'institutes/logos');
                 }
             } else if (req.file) {
-                payload.avatar = `/uploads/${req.file.filename}`;
+                payload.avatar = await uploadService.uploadFile(req.file, 'avatars');
             }
 
             const data = await instituteService.updateInstituteProfile(req.user.userId, payload);
@@ -267,12 +268,12 @@ class InstituteController {
 
             const files = req.files as { [fieldname: string]: Express.Multer.File[] };
             if (files?.image?.[0]) {
-                payload.image = `/uploads/${files.image[0].filename}`;
+                payload.image = await uploadService.uploadFile(files.image[0], 'courses/images');
             } else if (req.file) {
-                payload.image = `/uploads/${req.file.filename}`;
+                payload.image = await uploadService.uploadFile(req.file, 'courses/images');
             }
             if (files?.paymentReceipt?.[0]) {
-                payload.paymentReceiptPath = `/uploads/${files.paymentReceipt[0].filename}`;
+                payload.paymentReceiptPath = await uploadService.uploadFile(files.paymentReceipt[0], 'bookings/receipts');
             }
 
             const updatedCourse = await instituteService.updateCourse(req.user.userId, id, payload);
@@ -364,7 +365,7 @@ class InstituteController {
 
             // Handle file upload
             if (req.file) {
-                payload.image = `/uploads/${req.file.filename}`;
+                payload.image = await uploadService.uploadFile(req.file, 'rooms/images');
             }
 
             const data = await instituteService.addInstituteHall(req.user.userId, payload);
@@ -392,7 +393,7 @@ class InstituteController {
 
             // Handle file upload
             if (req.file) {
-                payload.image = `/uploads/${req.file.filename}`;
+                payload.image = await uploadService.uploadFile(req.file, 'rooms/images');
             }
 
             const data = await instituteService.updateInstituteHall(req.user.userId, req.params.hallId, payload);
@@ -465,12 +466,12 @@ class InstituteController {
             const files = req.files as { [fieldname: string]: Express.Multer.File[] };
 
             if (files?.image?.[0]) {
-                payload.image = `/uploads/${files.image[0].filename}`;
+                payload.image = await uploadService.uploadFile(files.image[0], 'courses/images');
             }
 
             let paymentReceiptPath: string | undefined;
             if (files?.paymentReceipt?.[0]) {
-                paymentReceiptPath = `/uploads/${files.paymentReceipt[0].filename}`;
+                paymentReceiptPath = await uploadService.uploadFile(files.paymentReceipt[0], 'bookings/receipts');
             }
 
             const course = await instituteService.createCourse(req.user.userId, payload, paymentReceiptPath);

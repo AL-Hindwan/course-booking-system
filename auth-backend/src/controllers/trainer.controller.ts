@@ -2,6 +2,7 @@ import { Response, NextFunction } from 'express';
 import { AuthRequest } from '../middleware/authenticate';
 import trainerService from '../services/trainer.service';
 import { sendError, sendSuccess } from '../utils/response';
+import { uploadService } from '../services/upload.service';
 
 class TrainerController {
     /**
@@ -182,7 +183,7 @@ class TrainerController {
             // Handle file upload
             let receiptFile = undefined;
             if (req.file) {
-                receiptFile = `/uploads/${req.file.filename}`;
+                receiptFile = await uploadService.uploadFile(req.file, 'bookings/receipts');
             }
 
             const parsedSessions = typeof sessions === 'string' ? JSON.parse(sessions) : sessions;
@@ -273,13 +274,13 @@ class TrainerController {
             // Handle file uploads (both image and paymentReceipt via upload.fields)
             const files = req.files as { [fieldname: string]: Express.Multer.File[] };
             if (files?.image?.[0]) {
-                payload.image = `/uploads/${files.image[0].filename}`;
+                payload.image = await uploadService.uploadFile(files.image[0], 'courses/images');
             } else if (req.file) {
                 // fallback for single upload
-                payload.image = `/uploads/${req.file.filename}`;
+                payload.image = await uploadService.uploadFile(req.file, 'courses/images');
             }
             if (files?.paymentReceipt?.[0]) {
-                payload.paymentReceiptPath = `/uploads/${files.paymentReceipt[0].filename}`;
+                payload.paymentReceiptPath = await uploadService.uploadFile(files.paymentReceipt[0], 'bookings/receipts');
             }
 
             const updated = await trainerService.updateTrainerCourse(req.user.userId, courseId, payload);
@@ -377,12 +378,12 @@ class TrainerController {
             const files = req.files as { [fieldname: string]: Express.Multer.File[] };
 
             if (files?.image && files.image[0]) {
-                payload.image = `/uploads/${files.image[0].filename}`;
+                payload.image = await uploadService.uploadFile(files.image[0], 'courses/images');
             }
 
             let paymentReceiptPath: string | undefined;
             if (files?.paymentReceipt && files.paymentReceipt[0]) {
-                paymentReceiptPath = `/uploads/${files.paymentReceipt[0].filename}`;
+                paymentReceiptPath = await uploadService.uploadFile(files.paymentReceipt[0], 'bookings/receipts');
             }
 
             const course = await trainerService.createCourse(req.user.userId, payload, paymentReceiptPath);
@@ -419,7 +420,7 @@ class TrainerController {
             const files = req.files as { [fieldname: string]: Express.Multer.File[] };
             let avatarPath: string | undefined;
             if (files?.avatar?.[0]) {
-                avatarPath = `/uploads/${files.avatar[0].filename}`;
+                avatarPath = await uploadService.uploadFile(files.avatar[0], 'avatars');
             }
 
             const safeSpecialties = (() => {
@@ -594,7 +595,7 @@ class TrainerController {
                 return sendError(res, 'يرجى إرفاق إيصال الدفع الجديد', 400);
             }
 
-            const paymentReceiptPath = `/uploads/${files.paymentReceipt[0].filename}`;
+            const paymentReceiptPath = await uploadService.uploadFile(files.paymentReceipt[0], 'bookings/receipts');
 
             const updated = await trainerService.resubmitBookingPayment(
                 req.user.userId,

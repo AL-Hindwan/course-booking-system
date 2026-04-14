@@ -11,7 +11,6 @@ import studentRoutes from './routes/student.routes';
 import { errorHandler } from './middleware/errorHandler';
 import { generalLimiter } from './middleware/rateLimiter';
 import prisma from './config/database';
-import redis from './config/redis';
 import { startSessionScheduler } from './utils/sessionScheduler';
 import { startSessionReminderJob } from './jobs/session-reminder.job';
 import { startAnnouncementScheduler } from './utils/announcementScheduler';
@@ -85,7 +84,6 @@ const gracefulShutdown = async () => {
     console.log('\n🛑 Shutting down gracefully...');
 
     await prisma.$disconnect();
-    redis.disconnect();
 
     process.exit(0);
 };
