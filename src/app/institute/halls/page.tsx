@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import { useEffect, useMemo, useRef, useState } from "react"
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
@@ -119,7 +119,7 @@ export default function InstituteHallsPage() {
 
   useEffect(() => {
     let url = editingHall?.image ?? ""
-    setImagePreviewUrl(getFileUrl(url))
+    setImagePreviewUrl(getFileUrl(url) ?? "")
   }, [editingHall?.image])
 
   const handleSaveEdit = async () => {
