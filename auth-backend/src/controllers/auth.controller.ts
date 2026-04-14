@@ -18,7 +18,7 @@ export class AuthController {
         if (result.connected) {
             return sendSuccess(res, result.message, result);
         } else {
-            return sendError(res, result.message, 500);
+            return sendError(res, `${result.message}: ${result.error}`, 500);
         }
     }
 
