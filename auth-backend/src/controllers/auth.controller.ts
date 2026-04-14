@@ -4,6 +4,7 @@ import { sendSuccess, sendError } from '../utils/response';
 import { AuthRequest } from '../middleware/authenticate';
 import { uploadService } from '../services/upload.service';
 import { checkDatabaseConnection } from '../utils/db-check';
+import prisma from '../config/database';
 import {
     RegisterInput,
     LoginInput,
