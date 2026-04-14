@@ -118,6 +118,7 @@ export default function InstituteHallsPage() {
   }
 
   useEffect(() => {
+    // Force refresh fix for Vercel
     let url = editingHall?.image ?? ""
     setImagePreviewUrl(getFileUrl(url) ?? "")
   }, [editingHall?.image])
