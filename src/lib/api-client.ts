@@ -45,12 +45,13 @@ const onTokenRefreshed = (token: string): void => {
  * Create Axios instance with base configuration
  */
 const getBaseURL = () => {
-    // In production browser, always use the current origin to ensure Same-Origin cookies
+    // In production browser, returning an empty string '' makes Axios use relative paths.
+    // This is the industry-standard way to ensure Same-Origin requests and cookie persistence.
     if (typeof window !== 'undefined' && !window.location.hostname.includes('localhost')) {
-        return window.location.origin;
+        return '';
     }
 
-    // Fallback to environment variable or localhost
+    // Fallback to environment variable or explicit localhost for development
     if (process.env.NEXT_PUBLIC_API_URL) return process.env.NEXT_PUBLIC_API_URL;
     if (typeof window !== 'undefined') return window.location.origin;
     return 'http://localhost:5000';
