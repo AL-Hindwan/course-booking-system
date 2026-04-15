@@ -795,21 +795,41 @@ class TrainerService {
         });
         if (!course) throw new Error('الدورة غير موجودة أو لا تنتمي لهذا المدرب');
 
-        return prisma.$transaction(async (tx) => {
+        const result = await prisma.$transaction(async (tx) => {
             // Delete associated payments
             await tx.payment.deleteMany({
                 where: { enrollmentId: enrollmentId }
             });
 
             // Update enrollment status
-            return tx.enrollment.update({
+            const updatedEnrollment = await tx.enrollment.update({
                 where: { id: enrollmentId },
                 data: {
                     status: 'CANCELLED',
                     cancellationReason: reason,
                 },
+                include: { student: { select: { id: true, name: true, email: true, phone: true } }, course: { select: { title: true } } }
             });
+
+            return { updatedEnrollment };
         });
+
+        // ── Notify student about the cancellation ──────────────
+        const student = result.updatedEnrollment.student;
+        const courseTitle = result.updatedEnrollment.course.title;
+
+        await notificationService.createNotification({
+            userId: student.id,
+            type: 'ENROLLMENT_REJECTED',
+            title: 'تم إلغاء تسجيلك',
+            message: `تم إلغاء تسجيلك في دورة "${courseTitle}". السبب: ${reason}`,
+            relatedEntityId: enrollmentId,
+            actionUrl: '/student/my-courses',
+            emailFn: student.email ? () => mailerService.sendEnrollmentRejected(student.email!, student.name, courseTitle, reason) : undefined,
+            whaFn: student.phone ? () => whatsAppService.notifyEnrollmentRejected(student.phone!, student.name, courseTitle, reason) : undefined,
+        });
+
+        return result.updatedEnrollment;
     }
 
     /**

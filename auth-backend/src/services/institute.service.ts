@@ -1475,23 +1475,41 @@ class InstituteService {
             throw new Error("الدورة غير موجودة أو لا تنتمي لهذا المعهد");
         }
 
-        return prisma.$transaction(async (tx) => {
+        const result = await prisma.$transaction(async (tx) => {
             // Delete associated payments
             await tx.payment.deleteMany({
                 where: { enrollmentId: enrollmentId }
             });
 
             // Update enrollment status
-            await tx.enrollment.update({
+            const updatedEnrollment = await tx.enrollment.update({
                 where: { id: enrollmentId },
                 data: {
                     status: "CANCELLED",
                     cancellationReason: reason,
                 },
+                include: { student: { select: { id: true, name: true, email: true, phone: true } }, course: { select: { title: true } } }
             });
 
-            return { message: "تم إلغاء تسجيل الطالب بنجاح" };
+            return { updatedEnrollment };
         });
+
+        // ── Notify student about the cancellation ──────────────
+        const student = result.updatedEnrollment.student;
+        const courseTitle = result.updatedEnrollment.course.title;
+
+        await notificationService.createNotification({
+            userId: student.id,
+            type: 'ENROLLMENT_REJECTED',
+            title: 'تم إلغاء تسجيلك',
+            message: `تم إلغاء تسجيلك في دورة "${courseTitle}". السبب: ${reason}`,
+            relatedEntityId: enrollmentId,
+            actionUrl: '/student/my-courses',
+            emailFn: student.email ? () => mailerService.sendEnrollmentRejected(student.email!, student.name, courseTitle, reason) : undefined,
+            whaFn: student.phone ? () => whatsAppService.notifyEnrollmentRejected(student.phone!, student.name, courseTitle, reason) : undefined,
+        });
+
+        return { message: "تم إلغاء تسجيل الطالب بنجاح" };
     }
 
     /**
@@ -2091,10 +2109,25 @@ class InstituteService {
                 }
             });
 
+            // ── Notify student about payment rejection ──────────────
+            const student = await prisma.user.findUnique({ where: { id: enrollment.studentId }, select: { name: true, email: true, phone: true } });
+            if (student) {
+                await notificationService.createNotification({
+                    userId: enrollment.studentId,
+                    type: 'PAYMENT_REJECTED',
+                    title: 'تم رفض إيصال الدفع',
+                    message: `تم رفض سند الدفع لدورة "${enrollment.course.title}".${reason ? ` السبب: ${reason}` : ''} يرجى إعادة الرفع.`,
+                    relatedEntityId: enrollmentId,
+                    actionUrl: '/student/my-courses',
+                    emailFn: student.email ? () => mailerService.sendPaymentRejected(student.email!, student.name, enrollment.course.title, reason) : undefined,
+                    whaFn: student.phone ? () => whatsAppService.notifyPaymentRejected(student.phone!, student.name, enrollment.course.title, reason) : undefined,
+                });
+            }
+
             return { ...enrollment, status: enrollment.status, paymentStatus: 'REJECTED' };
         }
 
-        return prisma.$transaction(async (tx) => {
+        const result = await prisma.$transaction(async (tx) => {
             if (status === 'CANCELLED') {
                 // Delete associated payments for this enrollment when cancelling/rejecting
                 await tx.payment.deleteMany({
@@ -2136,8 +2169,64 @@ class InstituteService {
                 }
             }
 
-            return updatedEnrollment;
+            return { updatedEnrollment, targetStatus };
         });
+
+        // ── Notify student about the enrollment status change ──────────────
+        const student = await prisma.user.findUnique({ where: { id: enrollment.studentId }, select: { name: true, email: true, phone: true } });
+        const courseTitle = enrollment.course.title;
+
+        if (student) {
+            if (result.targetStatus === 'PENDING_PAYMENT') {
+                await notificationService.createNotification({
+                    userId: enrollment.studentId,
+                    type: 'ENROLLMENT_PRELIMINARY_ACCEPTED',
+                    title: 'تم قبولك مبدئياً',
+                    message: `تم قبول طلبك مبدئياً في دورة "${courseTitle}". يرجى إكمال عملية الدفع.`,
+                    relatedEntityId: enrollmentId,
+                    actionUrl: '/student/my-courses',
+                    emailFn: student.email ? () => mailerService.sendEnrollmentPreliminaryAccepted(student.email!, student.name, courseTitle) : undefined,
+                    whaFn: student.phone ? () => whatsAppService.notifyEnrollmentPreliminaryAccepted(student.phone!, student.name, courseTitle) : undefined,
+                });
+            } else if (result.targetStatus === 'ACTIVE') {
+                await notificationService.createNotification({
+                    userId: enrollment.studentId,
+                    type: 'ENROLLMENT_FINAL_ACCEPTED',
+                    title: 'تم قبولك نهائياً',
+                    message: `تهانينا! تم تأكيد تسجيلك في دورة "${courseTitle}".`,
+                    relatedEntityId: enrollmentId,
+                    actionUrl: '/student/my-courses',
+                    emailFn: student.email ? () => mailerService.sendEnrollmentFinalAccepted(student.email!, student.name, courseTitle) : undefined,
+                    whaFn: student.phone ? () => whatsAppService.notifyEnrollmentFinalAccepted(student.phone!, student.name, courseTitle) : undefined,
+                });
+                
+                if (enrollment.payments.length > 0) {
+                    await notificationService.createNotification({
+                        userId: enrollment.studentId,
+                        type: 'PAYMENT_APPROVED',
+                        title: 'تم قبول دفعتك',
+                        message: `تم التحقق من دفعتك لدورة "${courseTitle}" والموافقة عليها.`,
+                        relatedEntityId: enrollmentId,
+                        actionUrl: '/student/my-courses',
+                        emailFn: student.email ? () => mailerService.sendPaymentApproved(student.email!, student.name, courseTitle) : undefined,
+                        whaFn: student.phone ? () => whatsAppService.notifyPaymentApproved(student.phone!, student.name, courseTitle) : undefined,
+                    });
+                }
+            } else if (result.targetStatus === 'CANCELLED') {
+                await notificationService.createNotification({
+                    userId: enrollment.studentId,
+                    type: 'ENROLLMENT_REJECTED',
+                    title: 'تم رفض تسجيلك',
+                    message: `نأسف، تم رفض تسجيلك في دورة "${courseTitle}".${reason ? ` السبب: ${reason}` : ''}`,
+                    relatedEntityId: enrollmentId,
+                    actionUrl: '/student/my-courses',
+                    emailFn: student.email ? () => mailerService.sendEnrollmentRejected(student.email!, student.name, courseTitle, reason) : undefined,
+                    whaFn: student.phone ? () => whatsAppService.notifyEnrollmentRejected(student.phone!, student.name, courseTitle, reason) : undefined,
+                });
+            }
+        }
+
+        return result.updatedEnrollment;
     }
     /**
      * Get all public approved institutes
